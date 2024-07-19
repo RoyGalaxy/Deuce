@@ -14,12 +14,13 @@ const home = () => {
       <View className="flex-1 bg-gray-100">
         <Stack.Screen
           options={{
+            title: "Search",
             headerShown: true,
             headerRight: () => <HeaderRight />
           }}
         />
         <ScrollView stickyHeaderIndices={[2]} className="">
-          <SearchBar />
+          <SearchBar onSearch={undefined} searchValue={undefined} setSearchValue={undefined} />
           <HorizontalScrollBanner />
           <HorizontalFilterOptions />
           <TurfListing />

@@ -31,7 +31,10 @@ export default function RootLayout() {
     <SafeAreaProvider>
       <Stack>
         <Stack.Screen name="index" options={{headerShown: false}}/>
-        <Stack.Screen name="home" options={{title: "Banglore, Karnataka, India", headerShown: true, headerShadowVisible: false, headerTitleStyle: {fontSize: 18,} }}/>
+        <Stack.Screen name="(tabs)/app" options={{ headerShown: false }}/>
+        <Stack.Screen name="(tabs)/Home" options={{title: "", headerShown: true, headerShadowVisible: false, headerTitleStyle: {fontSize: 18,} }}/>
+        <Stack.Screen name="book" options={{ headerShown: true, headerShadowVisible: false,}} />
+        <Stack.Screen name="(tabs)/Community" options={{title: "Community", headerShown: true, headerShadowVisible: false, headerTitleStyle: {fontSize: 18,}}}/>
         <Stack.Screen name="stadium" options={{ headerShown: true, headerShadowVisible: false,}} />
       </Stack>
     </SafeAreaProvider>

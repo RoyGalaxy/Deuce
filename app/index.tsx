@@ -11,7 +11,7 @@ const index = () => {
         <Text className='font-bold text-3xl text-white w-full text-center'>Deuce</Text>
       </SafeAreaView>
       <View className='p-8'>
-        <TouchableOpacity className='bg-white p-4 rounded-xl flex flex-row items-center justify-center' onPress={() => router.replace('/home')}>
+        <TouchableOpacity className='bg-white p-4 rounded-xl flex flex-row items-center justify-center' onPress={() => router.replace('/app')}>
           <Text className='text-lg font-bold flex-1 text-center'>Get Started</Text>
         </TouchableOpacity>
       </View>
