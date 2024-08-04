@@ -2,7 +2,7 @@ import 'react-native-gesture-handler';
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Home from './Home';
+import Home from './home';
 import Community from './Community';
 import Profile from './Profile';
 import { Ionicons } from '@expo/vector-icons';

@@ -1,12 +1,34 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Switch } from 'react-native';
 
-const TimeSlotSelector = () => {
+const TimeSlotSelector = ({ turfs, day, selectedTimeSlot }) => {
   const [isEnabled, setIsEnabled] = useState(false);
   const [selectedSlot, setSelectedSlot] = useState('15:00');  const [showAvailableOnly, setShowAvailableOnly] = useState(true);
+  const [slots, setSlots] = useState([]);
   
+  const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
-  const slots = ['14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '21:30', '22:00'];
+  // const slots = ['14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '21:30', '22:00'];
+
+  useEffect(() => {
+    setSlots([])
+    let slots = [];
+    turfs?.forEach(turf => {
+      let availableSlots = [];
+      for(let i = 0; i < turf.availability.length; i++){
+        if(turf.availability[i].day == days[day]){
+          turf.availability[i].timeSlots.forEach(slot => {
+            if(slot.available && !slots.includes(slot.startTime)){
+              availableSlots.push(slot.startTime)
+            }
+          })
+          break;
+        }
+      }
+      slots = [...slots, ...availableSlots]
+    })
+    setSlots(slots)
+  }, [turfs, day]);
 
   return (
     <View style={styles.container}>

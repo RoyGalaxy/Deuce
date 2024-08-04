@@ -1,22 +1,29 @@
-import { View, Text, TouchableOpacity } from 'react-native'
-import { SafeAreaView } from "react-native-safe-area-context"
-import React from 'react'
-import { useRouter } from 'expo-router'
+import { AuthContext } from '@/context/AuthContext'
+import { Redirect, useRouter } from 'expo-router'
+import React, { useContext, useEffect } from 'react'
+import { Text, ActivityIndicator, View } from "react-native"
 
 const index = () => {
-  const router = useRouter();
-  return (
-    <View className="flex-1 bg-green-400">
-      <SafeAreaView className='flex-1 flex items-center justify-center'>
-        <Text className='font-bold text-3xl text-white w-full text-center'>Deuce</Text>
-      </SafeAreaView>
-      <View className='p-8'>
-        <TouchableOpacity className='bg-white p-4 rounded-xl flex flex-row items-center justify-center' onPress={() => router.replace('/app')}>
-          <Text className='text-lg font-bold flex-1 text-center'>Get Started</Text>
-        </TouchableOpacity>
-      </View>
+  const router = useRouter()
+  const { isLoading, userToken } = useContext(AuthContext)
+
+  useEffect(() => {
+    if(!isLoading){
+      if(userToken !== null){
+        router.replace("(tabs)/app")
+      }else{
+        router.replace("/getStarted")
+      }
+    } 
+  })
+
+  if(isLoading) {
+    <View className='flex-1 justify-center items-center'>
+      <ActivityIndicator size="large" />
     </View>
-  )
+  }
+
+  return null;
 }
 
 export default index

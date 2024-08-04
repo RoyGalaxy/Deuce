@@ -1,10 +1,10 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 
-const StadiumInfo = () => {
+const StadiumInfo = ({ name }) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.stadiumName}>ABC Turf Club</Text>
+      <Text style={styles.stadiumName}>{ name }</Text>
       <Text style={styles.stadiumAddress}>Shed 21, 206 Lorimer Street, Docklands</Text>
     </View>
   );

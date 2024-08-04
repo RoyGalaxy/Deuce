@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { SafeAreaView, ScrollView, StyleSheet, View, Text } from 'react-native';
 import BlankSpaceFooter from '@/components/BlankSpaceFooter';
 import SectionTitle from '@/components/SectionTitle';
@@ -7,16 +7,35 @@ import { Stack, useRouter } from 'expo-router';
 import HeaderRight from '@/components/HeaderRight';
 import { Feather } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const HomeScreen = () => {
   const router = useRouter();
+  const [name, setName] = useState("")
+
+  const getData = async (key) => {
+    try {
+      const value = await AsyncStorage.getItem(key);
+      if (value !== null) {
+        const user = JSON.parse(value);
+        setName(user.name.split(' ')[0])
+      }
+    } catch (e) {
+      // error reading value
+    }
+  };
+
+  useEffect(() => {
+    getData("@user");
+  }, [])
+  
 
   return (
     <SafeAreaView style={styles.container}>
       <Stack.Screen
         options={{
-          title: "Hi Abhijeet!",
+          title: `Hi ${name}!`,
           headerShown: true,
           headerRight: () => <HeaderRight />,
           }}

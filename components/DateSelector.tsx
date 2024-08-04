@@ -1,19 +1,30 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
-const DateSelector = () => {
-  const [selectedDate, setSelectedDate] = useState('19 Jul');
-  const dates = [
-    { day: 'FRI', date: '19', month: 'Jul' },
-    { day: 'SAT', date: '20', month: 'Jul' },
-    { day: 'SUN', date: '21', month: 'Jul' },
-    { day: 'MON', date: '22', month: 'Jul' },
-    { day: 'TUE', date: '23', month: 'Jul' },
-    { day: 'WED', date: '24', month: 'Jul' },
-  ];
+const DateSelector = ({daySelector}) => {
+  const date = new Date();
 
-  const handleDatePress = (date, month) => {
-    setSelectedDate(`${date} ${month}`);
+  const [selectedDate, setSelectedDate] = useState(JSON.stringify(date.getDate()));
+  const [dates, setDates] = useState([]);
+  const days = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+  const months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"]
+
+  useEffect(() => {
+    let weekDates = [];
+    for(let i = 0; i < 7; i++){
+      const date = new Date(new Date().getTime() + i * (24 * 60 * 60 * 1000));
+      weekDates.push({ 
+        day: days[date.getDay()],
+        date: `${date.getDate()}`,
+        month: months[date.getMonth()]
+      })
+    }
+    setDates(weekDates)
+  }, [])
+
+  const handleDatePress = (day, date, month) => {
+    setSelectedDate(`${date}`);
+    daySelector(days.indexOf(day))
   };
 
   return (
@@ -23,14 +34,14 @@ const DateSelector = () => {
           key={index}
           style={[
             styles.dateItem,
-            selectedDate === `${item.date} ${item.month}` && styles.selectedDateItem,
+            selectedDate === `${item.date}` && styles.selectedDateItem,
           ]}
-          onPress={() => handleDatePress(item.date, item.month)}
+          onPress={() => handleDatePress(item.day, item.date, item.month)}
         >
           <Text
             style={[
               styles.day,
-              selectedDate === `${item.date} ${item.month}` && styles.selectedText,
+              selectedDate === `${item.date}` && styles.selectedText,
             ]}
           >
             {item.day}
@@ -38,7 +49,7 @@ const DateSelector = () => {
           <Text
             style={[
               styles.date,
-              selectedDate === `${item.date} ${item.month}` && styles.selectedText,
+              selectedDate === `${item.date}` && styles.selectedText,
             ]}
           >
             {item.date}
@@ -46,7 +57,7 @@ const DateSelector = () => {
           <Text
             style={[
               styles.month,
-              selectedDate === `${item.date} ${item.month}` && styles.selectedText,
+              selectedDate === `${item.date}` && styles.selectedText,
             ]}
           >
             {item.month}

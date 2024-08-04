@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'expo-router';
 import { View, ScrollView, Text, Image, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
 
@@ -9,6 +9,8 @@ const stadiums = [
   { id: 3, name: 'XYZ Turf Club', address: 'St Meera School (~3.73 km)', rating: "4.5(7)" },
   // Add more stadiums as needed
 ];
+
+const API_ENDPOINT = "https://deuce.co.in";
 
 const Product = ({ name, address, rating, onPress }) => {  
   return (
@@ -32,19 +34,32 @@ const Product = ({ name, address, rating, onPress }) => {
 
 const ProductListing = () => {
   const router = useRouter();
+  const [turfs, setTurfs] = useState([]);
+
+  // Fetch data from API
+  useEffect(() => {
+    getTurfs();    
+  }, [])
+
+  
+  const getTurfs = async () => {
+    const res = await fetch(`${API_ENDPOINT}/api/stadiums/`)
+    const jsonRes = await res.json()
+    setTurfs(jsonRes)
+  }
 
   return (
     <View style={styles.container} className='mb-48'>
       {/* Vertical Scroll List of Products */}
       <ScrollView style={styles.productListContainer} className='py-3'>
-        {stadiums.map((stadium) => (
+        {turfs.map((stadium, index) => (
           // <Text key={stadium.id}>Hello World</Text>
           <Product
-            key={stadium.id}
+            key={stadium._id}
             name={stadium.name}
-            address={stadium.address}
-            rating={stadium.rating}
-            onPress={() => {router.push({pathname: '/stadium', params: {id: stadium.id}})}}
+            address={stadiums[index].address}
+            rating={stadiums[index].rating}
+            onPress={() => {router.push({pathname: '/stadium', params: {id: stadium._id}})}}
           />
         ))}
       </ScrollView>
