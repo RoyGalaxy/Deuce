@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
-const DateSelector = ({daySelector}) => {
+const DateSelector = ({daySelector, selectedDate, dateSelector, monthSelector}) => {
   const date = new Date();
 
-  const [selectedDate, setSelectedDate] = useState(JSON.stringify(date.getDate()));
   const [dates, setDates] = useState([]);
   const days = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
   const months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"]
@@ -23,7 +22,8 @@ const DateSelector = ({daySelector}) => {
   }, [])
 
   const handleDatePress = (day, date, month) => {
-    setSelectedDate(`${date}`);
+    monthSelector(months.indexOf(month))
+    dateSelector(`${date}`);
     daySelector(days.indexOf(day))
   };
 

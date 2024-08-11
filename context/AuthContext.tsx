@@ -15,10 +15,9 @@ export const AuthProvider = ({children}) => {
     iosClientId: "668489590676-ekc8a2bitdlmt8po1684et1bk350tflq.apps.googleusercontent.com"
   })
 
-  const login = () => {
-    setUserToken("sometoken");;
+  const login = (token) => {
+    setUserToken(token);
     setIsLoading(false)
-    resetRouterPath("/(tabs)/home")
   }
   
   const logout = () => {
@@ -55,7 +54,7 @@ export const AuthProvider = ({children}) => {
   useEffect(() => {
     setIsLoading(true);
     getData("@accessToken", false).then(() => setIsLoading(false))
-    // getData("@user", true) 
+    getData("@user", true)
   }, [])
 
   return (

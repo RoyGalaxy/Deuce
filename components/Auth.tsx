@@ -41,17 +41,15 @@ export default function(){
           const userInfo = await GoogleSignin.signIn();
           storeData("@user", JSON.stringify(userInfo.user))
           
-          const res = await axios.post("http://localhost:5100/api/auth/google-signin", {
+          const res = await axios.post("https://deuce.co.in/api/auth/google-signin", {
             googleId: userInfo.user.id,
             name: userInfo.user.name,
             email: userInfo.user.email
           })
 
           if(res.data.token){
-            console.log(res.data.token)
-            storeData("@accessToken", res.data.token);
+            await storeData("@accessToken", res.data.token)
           }
-
           router.dismissAll()
           router.replace("(tabs)/app")
         } catch (error: any) {

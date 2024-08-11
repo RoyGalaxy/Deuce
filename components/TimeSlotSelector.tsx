@@ -1,25 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Switch } from 'react-native';
 
-const TimeSlotSelector = ({ turfs, day, selectedTimeSlot }) => {
+const TimeSlotSelector = ({ turfs, day, selectedTimeSlot, timeSlotSelector, sport }) => {
   const [isEnabled, setIsEnabled] = useState(false);
-  const [selectedSlot, setSelectedSlot] = useState('15:00');  const [showAvailableOnly, setShowAvailableOnly] = useState(true);
+  const [showAvailableOnly, setShowAvailableOnly] = useState(true);
   const [slots, setSlots] = useState([]);
   
   const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
-  // const slots = ['14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '21:30', '22:00'];
 
   useEffect(() => {
     setSlots([])
     let slots = [];
     turfs?.forEach(turf => {
+      if(turf.sport !== sport) return;
       let availableSlots = [];
       for(let i = 0; i < turf.availability.length; i++){
         if(turf.availability[i].day == days[day]){
           turf.availability[i].timeSlots.forEach(slot => {
-            if(slot.available && !slots.includes(slot.startTime)){
-              availableSlots.push(slot.startTime)
+            if(!slots.includes(slot.startTime)){
+              // availableSlots.push(slot.startTime)
+              availableSlots.push(slot)
             }
           })
           break;
@@ -28,7 +29,7 @@ const TimeSlotSelector = ({ turfs, day, selectedTimeSlot }) => {
       slots = [...slots, ...availableSlots]
     })
     setSlots(slots)
-  }, [turfs, day]);
+  }, [turfs, day, sport]);
 
   return (
     <View style={styles.container}>
@@ -44,20 +45,21 @@ const TimeSlotSelector = ({ turfs, day, selectedTimeSlot }) => {
       <View style={styles.slotsContainer}>
         {slots.map((slot) => (
           <TouchableOpacity
-            key={slot}
+            key={slot.startTIme}
             style={[
               styles.slot,
-              selectedSlot === slot && styles.selectedSlot,
+              selectedTimeSlot === slot.startTime && styles.selectedSlot,
             ]}
-            onPress={() => setSelectedSlot(slot)}
+            className={`${!slot.available && 'bg-amber-100'}`}
+            onPress={() => {slot.available && timeSlotSelector(slot)}}
           >
             <Text
               style={[
                 styles.slotText,
-                selectedSlot === slot && styles.selectedSlotText,
+                (selectedTimeSlot === slot.startTime) && styles.selectedSlotText,
               ]}
             >
-              {slot}
+              {slot.startTime}
             </Text>
           </TouchableOpacity>
         ))}
@@ -80,10 +82,13 @@ const styles = StyleSheet.create({
   slotsContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'space-between',
+    gap: 8,
+    justifyContent: 'flex-start',
   },
   slot: {
-    width: '22%',
+    // width: '22%',
+    flex: 1,
+    maxWidth: '25%',
     padding: 8,
     borderRadius: 8,
     borderWidth: 1,
@@ -101,6 +106,9 @@ const styles = StyleSheet.create({
   selectedSlotText: {
     color: '#fff',
   },
+  unavailableText: {
+    color: "#ccc"
+  }
 });
 
 export default TimeSlotSelector;
