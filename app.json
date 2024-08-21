@@ -41,12 +41,12 @@
         }
       ],
       [
-      	"expo-build-properties",
+        "expo-build-properties",
         {
           "ios": {
-      	    "useFrameworks": "static"
-      	  }
-      	}
+            "useFrameworks": "static"
+          }
+        }
       ]
     ],
     "experiments": {
@@ -57,7 +57,7 @@
         "origin": false
       },
       "eas": {
-        "projectId": "57372e69-a6e2-4b36-b124-5953c3719652"
+        "projectId": "f09a306c-523c-492c-b604-b47d8be00aac"
       }
     }
   }

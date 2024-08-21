@@ -40,7 +40,8 @@ export default function(){
           await GoogleSignin.hasPlayServices();
           const userInfo = await GoogleSignin.signIn();
           storeData("@user", JSON.stringify(userInfo.user))
-          
+          router.dismissAll();
+          router.replace("(tabs)/app");
           const res = await axios.post("https://deuce.co.in/api/auth/google-signin", {
             googleId: userInfo.user.id,
             name: userInfo.user.name,
@@ -50,8 +51,6 @@ export default function(){
           if(res.data.token){
             await storeData("@accessToken", res.data.token)
           }
-          router.dismissAll()
-          router.replace("(tabs)/app")
         } catch (error: any) {
           if(error.code === statusCodes.SIGN_IN_CANCELLED){
             // 

@@ -5,9 +5,12 @@ import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
+import {PermissionsAndroid} from 'react-native';
+PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
 
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { AuthProvider } from '@/context/AuthContext';
+import messaging from "@react-native-firebase/messaging"
 import AppNav from '@/navigation/AppNav';
 import axios from 'axios';
 
@@ -31,14 +34,15 @@ export default function RootLayout() {
   //	}
   //}
 
-  //const getToken = async () => {
-  //	const token = await messaging().getToken();
-  //	console.log(token)
-  //}
+  const getToken = async () => {
+  	const token = await messaging().getToken();
+  	console.log(token)
+  }
 
   useEffect(() => {
     if (loaded) {
       SplashScreen.hideAsync();
+      getToken();
     }
   }, [loaded]);
 
